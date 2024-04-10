@@ -1,20 +1,11 @@
 package pages;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import actions.CommonActions;
 import annotations.PageValidation;
 import annotations.UrlPrefix;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -70,7 +61,7 @@ public class AnyPageAbs<T> extends CommonActions<T> {
   }
   
   public T open() {
-    driver.get(getUrl());
+    driver.get(getUrlPage());
     
     return (T) this;
   }
@@ -88,7 +79,7 @@ public class AnyPageAbs<T> extends CommonActions<T> {
     return null;
   }
   
-  public String getUrl() {
+  public String getUrlPage() {
     
     return getBaseUrl() + getUrlPrefix();
   }

@@ -3,9 +3,11 @@ package tests.ui.courses;
 import com.google.inject.Inject;
 import extensions.UIExtension;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebElement;
 import pages.CatalogPage;
 import pages.CoursePage;
 
@@ -20,12 +22,38 @@ public class CoursesBlockTest {
   
   @Test
   public void openCourseCardByClick() {
-    String name = "Reinforcement Learning";
+    String courseTitle = "Reinforcement Learning";
     
     catalogPage
         .open()
-        .clickCourseByName(name);
+        .clickCourseByName(courseTitle);
     
-    coursePage.pageShouldBeOpened(name);
+    coursePage.pageShouldBeOpened(courseTitle);
+  }
+  
+  @Test
+  public void openEarlierCourse() throws IOException {
+    List<Map<String, Object>> listCourses = catalogPage.open().findAllCourses();
+    String earlierCourseTitle = (String) listCourses.get(0).get("title");
+    LocalDate earlierCourseDate = (LocalDate) listCourses.get(0).get("date");
+    
+    catalogPage.clickCourseByName(earlierCourseTitle);
+    
+    coursePage
+        .pageShouldBeOpened(earlierCourseTitle)
+        .validationCourseDate(earlierCourseDate);
+  }
+  
+  @Test
+  public void openLatestCourse() throws IOException {
+    List<Map<String, Object>> listCourses = catalogPage.open().findAllCourses();
+    String latestCourseTitle = (String) listCourses.get(listCourses.size() - 1).get("title");
+    LocalDate latestCourseDate = (LocalDate) listCourses.get(listCourses.size() - 1).get("date");
+    
+    catalogPage.clickCourseByName(latestCourseTitle);
+    
+    coursePage
+        .pageShouldBeOpened(latestCourseTitle)
+        .validationCourseDate(latestCourseDate);
   }
 }
