@@ -1,5 +1,7 @@
 package pages;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import annotations.UrlPrefix;
 import com.google.inject.Inject;
 import java.io.IOException;
@@ -28,12 +30,6 @@ public class CatalogPage extends AnyPageAbs<CatalogPage> {
         .findFirst().ifPresent(WebElement::click);
   }
   
-  public void test() {
-    List<Map<String, Object>> collected = findAllCourses();
-    
-    collected.stream().forEach(e -> System.out.format("Begin - %s - END\n\n", e));
-  }
-  
   public List<Map<String, Object>> findAllCourses() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy", new Locale("ru", "RU"));
     Pattern datePattern = Pattern.compile("(\\d{1,2}\\s[а-яА-Я]+,\\s\\d{4})");
@@ -60,5 +56,16 @@ public class CatalogPage extends AnyPageAbs<CatalogPage> {
     LocalDate localDate = matcher.find() ? LocalDate.parse(matcher.group(1), formatter) : null;
     
     return localDate != null ? localDate.toString() : null;
+  }
+  
+  public void categoryCheck(String categoryName) {
+    String clearCategoryName = categoryName.replaceAll("\\s*\\(\\d+\\)$", "");
+    WebElement label = driver.findElement(By.xpath("//label[contains(text(), '" + clearCategoryName + "')]"));
+    String checkboxId = label.getAttribute("for");
+    WebElement checkbox = driver.findElement(By.id(checkboxId));
+    
+    assertThat(checkbox.isSelected())
+        .as("Checkbox with id '%s' should be selected", checkboxId)
+        .isTrue();
   }
 }

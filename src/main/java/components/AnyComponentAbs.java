@@ -3,13 +3,13 @@ package components;
 import actions.CommonActions;
 import annotations.Component;
 import com.google.inject.Inject;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AnyComponentAbs<T> extends CommonActions<T> {
   
@@ -20,12 +20,6 @@ public class AnyComponentAbs<T> extends CommonActions<T> {
   public AnyComponentAbs(WebDriver driver) {
     super(driver);
     actions = new Actions(driver);
-  }
-  
-  public T setTitle(String title) {
-    this.title = title;
-    
-    return (T) this;
   }
   
   public WebElement getComponentEntity() {
@@ -42,6 +36,7 @@ public class AnyComponentAbs<T> extends CommonActions<T> {
       }
       
       String searchStrategy = "";
+      String removePrefixSearchStrategy = value.replace(String.format("%s:", searchStrategy), "");
       
       Pattern pattern = Pattern.compile("^(\\w+):.*?");
       Matcher matcher = pattern.matcher(value);
@@ -50,10 +45,12 @@ public class AnyComponentAbs<T> extends CommonActions<T> {
       }
       
       switch (searchStrategy) {
-        case "xpath":
-          return By.xpath(value.replace(String.format("%s:", searchStrategy), ""));
-        case "id":
-          return By.id(value.replace(String.format("%s:", searchStrategy), ""));
+        case "xpath" -> {
+          return By.xpath(removePrefixSearchStrategy);
+        }
+        case "id" -> {
+          return By.id(removePrefixSearchStrategy);
+        }
       }
     }
     

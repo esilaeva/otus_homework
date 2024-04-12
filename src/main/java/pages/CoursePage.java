@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-
 public class CoursePage extends AnyPageAbs<CoursePage> {
   
   @Inject
@@ -25,7 +24,7 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
   public CoursePage pageShouldBeOpened(String courseTitle) {
     String locator = String.format("//h1[normalize-space(text())='%s']", courseTitle);
     
-    assertThat(standartWaiter.waitForElementVisible($(By.xpath(locator))))
+    assertThat(waiter.waitForElementVisible($(By.xpath(locator))))
         .as("Error").isTrue();
     
     return this;

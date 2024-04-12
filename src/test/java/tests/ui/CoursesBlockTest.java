@@ -1,4 +1,4 @@
-package tests.ui.courses;
+package tests.ui;
 
 import com.google.inject.Inject;
 import extensions.UIExtension;
@@ -22,7 +22,7 @@ public class CoursesBlockTest {
   
   @Test
   public void openCourseCardByClick() {
-    String courseTitle = "Reinforcement Learning";
+    String courseTitle = "Алгоритмы и структуры данных";
     
     catalogPage
         .open()
