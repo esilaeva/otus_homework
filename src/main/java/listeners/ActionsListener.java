@@ -10,9 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.events.WebDriverListener;
 
-/**
- * .
- */
 public class ActionsListener implements WebDriverListener {
   
   @Override
@@ -22,12 +19,11 @@ public class ActionsListener implements WebDriverListener {
         .forEach(origin -> ((JavascriptExecutor) driver)
             .executeScript(
                 "arguments[0].setAttribute("
-                    + "\"onmouseover\", \"style='border:5px solid black';\");"
+                    + "\"onmouseover\", \"style='border:5px solid red';\");"
                     + "arguments[0].setAttribute("
                     + "\"onclick\", \"style=null;\");",
                 origin));
   }
-  
   @SuppressWarnings("unchecked")
   private List<WebElement> getOrigins(Sequence sequence) {
     Map<String, Object> encodedSequence = sequence.encode();

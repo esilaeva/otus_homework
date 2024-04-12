@@ -1,22 +1,18 @@
 package waiters;
 
 import java.time.Duration;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-/**
- * Набор стандартных ожиданий
- *
- * @author Pavel Balahonov <p.balahonov@corp.mail.ru>
- */
-public class StandartWaiter implements WaiterInt {
+public class Waiter implements IWaiter {
   
   private WebDriver driver = null;
   
-  public StandartWaiter(WebDriver driver) {
+  public Waiter(WebDriver driver) {
     this.driver = driver;
   }
   
@@ -26,7 +22,7 @@ public class StandartWaiter implements WaiterInt {
     try {
       webDriverWait.until(condition);
       return true;
-    } catch (Exception ex) {
+    } catch (TimeoutException ex) {
       return false;
     }
   }
@@ -34,8 +30,5 @@ public class StandartWaiter implements WaiterInt {
   public boolean waitForElementVisible(WebElement element) {
     return waitForCondition(ExpectedConditions.visibilityOf(element));
   }
-  
-  public boolean waitForElementNotVisible(WebElement element) {
-    return waitForCondition(ExpectedConditions.invisibilityOf(element));
-  }
+
 }

@@ -3,11 +3,11 @@ package pages;
 import actions.CommonActions;
 import annotations.PageValidation;
 import annotations.UrlPrefix;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class AnyPageAbs<T> extends CommonActions<T> {
   
@@ -41,7 +41,7 @@ public class AnyPageAbs<T> extends CommonActions<T> {
         locator = By.cssSelector(markerElementLocator);
       }
       
-      standartWaiter.waitForElementVisible($(locator));
+      waiter.waitForElementVisible($(locator));
     }
     
     return "";
@@ -66,21 +66,12 @@ public class AnyPageAbs<T> extends CommonActions<T> {
     return (T) this;
   }
   
-  public <T> T page(Class<T> clazz) {
-    try {
-      Constructor constructor = clazz.getConstructor(WebDriver.class);
-      
-      return convertInstanceOfObject(constructor.newInstance(driver), clazz);
-      
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-      e.printStackTrace();
-    }
-    
-    return null;
-  }
-  
   public String getUrlPage() {
     
     return getBaseUrl() + getUrlPrefix();
+  }
+  
+  public List<WebElement> getListWebElements(By by) {
+    return driver.findElements(by);
   }
 }
