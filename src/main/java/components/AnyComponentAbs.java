@@ -13,6 +13,7 @@ import org.openqa.selenium.interactions.Actions;
 
 public class AnyComponentAbs<T> extends CommonActions<T> {
   
+  private static final String REGEX_REMOVE_PREFIX = "^(\\w+):.*?";
   protected Actions actions;
   protected String title = "";
   
@@ -38,7 +39,7 @@ public class AnyComponentAbs<T> extends CommonActions<T> {
       String searchStrategy = "";
       String removePrefixSearchStrategy = value.replace(String.format("%s:", searchStrategy), "");
       
-      Pattern pattern = Pattern.compile("^(\\w+):.*?");
+      Pattern pattern = Pattern.compile(REGEX_REMOVE_PREFIX);
       Matcher matcher = pattern.matcher(value);
       if (matcher.find()) {
         searchStrategy = matcher.group(1).toLowerCase(Locale.ROOT);

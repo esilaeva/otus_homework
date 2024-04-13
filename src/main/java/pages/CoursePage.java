@@ -48,6 +48,6 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
         .anyMatch(element -> element.text().contains(dateStr));
     
     assertThat(isDatePresent)
-        .as("Error: Дата курса не совпадает").isTrue();
+        .as("Error: Course date doesn't match").isTrue();
   }
 }

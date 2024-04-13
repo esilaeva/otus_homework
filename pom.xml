@@ -20,6 +20,7 @@
         <assertj.version>3.25.3</assertj.version>
         <guice.version>7.0.0</guice.version>
         <jsoup.version>1.17.2</jsoup.version>
+        <slf4j.version>2.1.0-alpha1</slf4j.version>
 
         <surefire.plugin.version>3.2.5</surefire.plugin.version>
         <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
@@ -70,6 +71,11 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 

@@ -11,19 +11,12 @@ import org.openqa.selenium.WebElement;
 
 public class AnyPageAbs<T> extends CommonActions<T> {
   
-  protected String markerLocator = "";
+  public static final String EMPTY = "";
+  protected String markerLocator = EMPTY;
   
   public AnyPageAbs(WebDriver driver) {
     super(driver);
     markerLocator = pageValidation();
-  }
-  
-  private static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
-    try {
-      return clazz.cast(o);
-    } catch (ClassCastException e) {
-      return null;
-    }
   }
   
   private String pageValidation() {
@@ -31,7 +24,7 @@ public class AnyPageAbs<T> extends CommonActions<T> {
       PageValidation pageValidation = getClass().getAnnotation(PageValidation.class);
       String markerElementLocator = pageValidation.value();
       if (markerElementLocator.startsWith("template:")) {
-        return markerElementLocator.replace("template:", "");
+        return markerElementLocator.replace("template:", EMPTY);
       }
       
       By locator = null;
@@ -44,7 +37,7 @@ public class AnyPageAbs<T> extends CommonActions<T> {
       waiter.waitForElementVisible($(locator));
     }
     
-    return "";
+    return EMPTY;
   }
   
   private String getBaseUrl() {
@@ -57,7 +50,7 @@ public class AnyPageAbs<T> extends CommonActions<T> {
       return urlAnnotation.value();
     }
     
-    return "";
+    return EMPTY;
   }
   
   public T open() {

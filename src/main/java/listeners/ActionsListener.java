@@ -12,17 +12,17 @@ import org.openqa.selenium.support.events.WebDriverListener;
 
 public class ActionsListener implements WebDriverListener {
   
+  private static final String SCRIPT_HIGHLIGHT_ELEMENT = "arguments[0].setAttribute("
+      + "\"onmouseover\", \"style='border:5px solid red';\");"
+      + "arguments[0].setAttribute("
+      + "\"onclick\", \"style=null;\");";
+  
   @Override
   public void beforePerform(WebDriver driver, Collection<Sequence> actions) {
     actions.stream()
         .flatMap(action -> getOrigins(action).stream())
         .forEach(origin -> ((JavascriptExecutor) driver)
-            .executeScript(
-                "arguments[0].setAttribute("
-                    + "\"onmouseover\", \"style='border:5px solid red';\");"
-                    + "arguments[0].setAttribute("
-                    + "\"onclick\", \"style=null;\");",
-                origin));
+            .executeScript(SCRIPT_HIGHLIGHT_ELEMENT, origin));
   }
   @SuppressWarnings("unchecked")
   private List<WebElement> getOrigins(Sequence sequence) {

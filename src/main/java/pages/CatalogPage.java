@@ -17,7 +17,11 @@ import org.openqa.selenium.WebElement;
 
 @UrlPrefix("/catalog/courses")
 public class CatalogPage extends AnyPageAbs<CatalogPage> {
-
+  
+  public static final String REGEX_SELECT_DATE_DD_MMMM_YYYY = "(\\d{1,2}\\s[а-яА-Я]+,\\s\\d{4})";
+  public static final String REGEX_REMOVE_NUMBERS_COURSES = "\\s*\\(\\d+\\)$";
+  
+  
   @Inject
   public CatalogPage(WebDriver driver) throws IOException {
     super(driver);
@@ -32,7 +36,7 @@ public class CatalogPage extends AnyPageAbs<CatalogPage> {
   
   public List<Map<String, Object>> findAllCourses() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy", new Locale("ru", "RU"));
-    Pattern datePattern = Pattern.compile("(\\d{1,2}\\s[а-яА-Я]+,\\s\\d{4})");
+    Pattern datePattern = Pattern.compile(REGEX_SELECT_DATE_DD_MMMM_YYYY);
     
     return driver.findElements(By.xpath("//section[2]//a[contains(@href, 'lessons')]")).stream()
         .map(e -> {
@@ -59,7 +63,7 @@ public class CatalogPage extends AnyPageAbs<CatalogPage> {
   }
   
   public void categoryCheck(String categoryName) {
-    String clearCategoryName = categoryName.replaceAll("\\s*\\(\\d+\\)$", "");
+    String clearCategoryName = categoryName.replaceAll(REGEX_REMOVE_NUMBERS_COURSES, EMPTY);
     WebElement label = driver.findElement(By.xpath("//label[contains(text(), '" + clearCategoryName + "')]"));
     String checkboxId = label.getAttribute("for");
     WebElement checkbox = driver.findElement(By.id(checkboxId));
