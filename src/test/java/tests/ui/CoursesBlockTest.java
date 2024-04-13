@@ -14,6 +14,7 @@ import pages.CoursePage;
 @ExtendWith(UIExtension.class)
 public class CoursesBlockTest {
   
+  public static final String COURSE_TITLE = "Алгоритмы и структуры данных";
   @Inject
   private CatalogPage catalogPage;
   
@@ -22,7 +23,7 @@ public class CoursesBlockTest {
   
   @Test
   public void openCourseCardByClick() {
-    String courseTitle = "Алгоритмы и структуры данных";
+    String courseTitle = COURSE_TITLE;
     
     catalogPage
         .open()

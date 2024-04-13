@@ -21,7 +21,9 @@ public class CommonActions<T> {
   
   public void moveToElement(By by) {
     Actions actions = new Actions(driver);
-    actions.moveToElement($(by)).build().perform();
+    actions.moveToElement($(by))
+        .build()
+        .perform();
   }
   
   public WebElement $(By by) {
