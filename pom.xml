@@ -16,7 +16,7 @@
         <webdrivermanager.version>5.8.0</webdrivermanager.version>
         <selenium.version>4.19.1</selenium.version>
         <junit.version>5.10.2</junit.version>
-        <junitPlatformSuite.version>1.10.2</junitPlatformSuite.version>
+        <junitPlatformSuite.version>1.10.1</junitPlatformSuite.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <guice.version>7.0.0</guice.version>
         <cucumber.version>7.17.0</cucumber.version>
@@ -55,10 +55,16 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite-api</artifactId>
+            <artifactId>junit-platform-suite</artifactId>
             <version>${junitPlatformSuite.version}</version>
         </dependency>
         <dependency>
@@ -106,6 +112,12 @@
             <artifactId>slf4j-jdk14</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -130,7 +142,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
                 <configuration>
-                    <systemPropertyVariables>
+                    <systemPropertyVariables>-->
                         <base.url>${base.url}</base.url>
                         <browser.name>${browser}</browser.name>
                     </systemPropertyVariables>

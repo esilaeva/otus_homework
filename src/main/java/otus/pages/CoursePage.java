@@ -12,24 +12,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import otus.support.GuiceScoped;
 
 public class CoursePage extends AnyPageAbs<CoursePage> {
-  
-  //  @FindBy(tagName = "h1")
-  //  private WebElement header;
   
   @Inject
   public CoursePage(GuiceScoped guiceScoped) throws IOException {
     super(guiceScoped);
   }
-  //
-  //  public void pageHeaderShouldBeSameAs(String expectedHeader) {
-  //    assertThat(header.getText()).isEqualTo(expectedHeader);
-  //  }
-  //
   
   public void pageShouldBeOpened(String courseTitle) {
     String locator = String.format("//h1[normalize-space(text())='%s']", courseTitle);

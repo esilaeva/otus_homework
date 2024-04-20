@@ -10,8 +10,8 @@ import org.junit.platform.suite.api.Suite;
 @SelectPackages("otus")
 @ConfigurationParameter(
     key = GLUE_PROPERTY_NAME,
-    value = "otus.steps"
+    value = "otus"
 )
-public class RunnerTests {
+public class RunnerTest {
 
 }

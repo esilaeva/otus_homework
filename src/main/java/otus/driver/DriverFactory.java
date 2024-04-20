@@ -1,18 +1,18 @@
 package otus.driver;
 
-import otus.driver.impl.ChromeWebDriver;
-import otus.driver.impl.FirefoxWebDriver;
-import otus.driver.impl.IDriver;
-import otus.exceptions.DriverTypeNotSupported;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.Locale;
-import otus.listeners.ActionsListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.events.EventFiringDecorator;
+import otus.driver.impl.ChromeWebDriver;
+import otus.driver.impl.FirefoxWebDriver;
+import otus.driver.impl.IDriver;
+import otus.exceptions.DriverTypeNotSupported;
+import otus.listeners.ActionsListener;
 
 public class DriverFactory {
   

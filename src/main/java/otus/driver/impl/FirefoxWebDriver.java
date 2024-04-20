@@ -10,7 +10,6 @@ public class FirefoxWebDriver implements IDriver{
     FirefoxOptions firefoxOptions = new FirefoxOptions();
     
     firefoxOptions.addArguments("--no-sandbox");
-    //    firefoxOptions.addArguments("--disable-popup-blocking"); // Отключение блокировки всплывающих окон
     firefoxOptions.addArguments("--ignore-certificate-errors");
     firefoxOptions.addArguments("--start-maximized");
     
