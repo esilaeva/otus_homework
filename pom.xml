@@ -13,29 +13,33 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <webdrivermanager.version>5.8.0</webdrivermanager.version>
+        <selenium.version>4.19.1</selenium.version>
         <junit.version>5.10.2</junit.version>
-        <selenium.version>4.18.1</selenium.version>
-        <webdrivermanager.version>5.7.0</webdrivermanager.version>
-        <faker.version>1.0.2</faker.version>
-        <assertj.version>3.25.3</assertj.version>
+        <junitPlatformSuite.version>1.10.2</junitPlatformSuite.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
         <guice.version>7.0.0</guice.version>
+        <cucumber.version>7.17.0</cucumber.version>
+        <assertj.version>3.25.3</assertj.version>
+        <faker.version>1.0.2</faker.version>
         <jsoup.version>1.17.2</jsoup.version>
         <slf4j.version>2.1.0-alpha1</slf4j.version>
 
         <surefire.plugin.version>3.2.5</surefire.plugin.version>
-        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
 
         <spotbugs.version>4.8.2.0</spotbugs.version>
         <checkstyle.version>3.3.1</checkstyle.version>
 
         <base.url/>
+        <browser>chrome</browser>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -48,14 +52,39 @@
             <version>${selenium.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${webdrivermanager.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>${faker.version}</version>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-api</artifactId>
+            <version>${junitPlatformSuite.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-guice</artifactId>
+            <version>${cucumber.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -63,9 +92,9 @@
             <version>${assertj.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${guice.version}</version>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${faker.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -103,7 +132,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <base.url>${base.url}</base.url>
-                        <browser.name>chrome</browser.name>
+                        <browser.name>${browser}</browser.name>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -149,6 +178,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
