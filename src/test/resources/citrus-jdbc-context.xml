@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-http="http://www.citrusframework.org/schema/http/config"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd">
+
+    <context:property-placeholder location="classpath:citrus.properties"/>
+
+    <citrus:global-variables>
+        <citrus:variable name="project.name" value="Citrus Integration Tests"/>
+        <citrus:file path="classpath:citrus.properties"/>
+    </citrus:global-variables>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="serializationInclusion" value="NON_NULL"/>
+    </bean>
+
+    <citrus-http:client
+            id="restClient"
+            request-url="${url}"
+            content-type="application/json"
+            timeout="15000"/>
+
+    <citrus-http:client
+            id="mockClient"
+            request-url="${urlMock}"
+            content-type="application/json"
+            timeout="15000"/>
+
+    <citrus-http:server
+            id="restServer"
+            port="5555"
+            auto-start="true"
+            timeout="15000"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="false">
+        <property name="driverClassName" value="${spring.datasource.driver-class-name}"/>
+        <property name="url" value="${spring.datasource.url}"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="functionRegistry" class="org.citrusframework.functions.FunctionRegistry"/>
+
+</beans>

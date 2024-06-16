@@ -14,10 +14,9 @@ import pages.CoursePage;
 @ExtendWith(UIExtension.class)
 public class CoursesBlockTest {
   
-  public static final String COURSE_TITLE = "Алгоритмы и структуры данных";
+  public static final String COURSE_TITLE = "Специалист по кибербезопасности облачных сред";
   @Inject
   private CatalogPage catalogPage;
-  
   @Inject
   private CoursePage coursePage;
   

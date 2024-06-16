@@ -36,6 +36,7 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM", new Locale("ru", "RU"));
     String dateStr = date.format(formatter);
     
+    //    Elements elements = page.select("div:nth-of-type(3) div.course-header2-bottom__content-item-text p ");
     Elements elements = page.select("main section div:nth-of-type(3) p");
     if (elements.isEmpty()) {
       elements = page.select(".course-header2-bottom__item-text")
