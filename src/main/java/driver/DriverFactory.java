@@ -17,7 +17,7 @@ import org.openqa.selenium.support.events.EventFiringDecorator;
 public class DriverFactory {
   
   private static final String BROWSER_CHROME = "chrome";
-  private static final String BROWDER_FIREFOX = "firefox";
+  private static final String BROWSER_FIREFOX = "firefox";
   private String browserType = System.getProperty("browser", BROWSER_CHROME).toLowerCase(Locale.ROOT);
   
   public WebDriver getDriver() {
@@ -29,7 +29,7 @@ public class DriverFactory {
         return new EventFiringDecorator<>(new ActionsListener())
             .decorate(new ChromeDriver(browserSettings.getDriverOptions()));
       }
-      case BROWDER_FIREFOX: {
+      case BROWSER_FIREFOX: {
         WebDriverManager.firefoxdriver().setup();
         IDriver<FirefoxOptions> browserSettings = new FirefoxWebDriver();
         
@@ -44,5 +44,7 @@ public class DriverFactory {
           return null;
         }
     }
+    
   }
+  
 }

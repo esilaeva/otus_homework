@@ -4,13 +4,14 @@
 
 ## Ветвление в репозитории
 
-- `main`: основная ветка. Содержит тесты, разработанные с применением двухуровневого подхода к дизайну тестов и с
+- `main`: основная ветка. Содержит UI-тесты, разработанные с применением двухуровневого подхода к дизайну тестов и с
   использованием паттернов проектирования.
-- `homework_2`: ветка, содержащая тесты, написанные с использованием **BDD** подхода через **Cucumber**.
+- `homework_2`: ветка, содержащая UI-тесты, написанные с использованием **BDD** подхода через **Cucumber**.
+- `homework_3`: ветка, содержащая API-тесты, написанные с использованием **Citrus Framework**.
 
 ## Технологии и иструменты
 
-Автотесты написаны на языке `Java` с использованием `JUnit 5`, `Selenium WebDriver`, `Cucumber`. Сборщик
+Автотесты написаны на языке `Java` с использованием `JUnit 5`, `Selenium WebDriver`, `Cucumber`, `Citrus Framework`. Сборщик
 проекта - `Maven`.
 <p align="center">
     <a href="https://www.java.com/">
@@ -40,24 +41,40 @@
     <a href="https://cucumber.io/">
       <img width="8%" title="Cucumber" src="src/main/resources/media/Cucumber.svg" alt="Cucumber">
     </a>
+    <a href="https://citrusframework.org/">
+      <img width="8%" title="Citrus Framework" src="src/main/resources/media/citrusframework.png" alt="Citrus Framework">
+    </a>
+    <a href="">
+      <img width="8%" title="Sqlite" src="src/main/resources/media/SQLite.svg" alt="Sqlite">
+    </a>
 </p>
 
 ## Команда для запуска автотестов из терминала
-Чтобы запустить тесты, реализованные по методологии **BDD (Cucumber)**, необходимо переключиться на ветку `homework_2`
+Для запуска всех тестов необходимо перейти в интересующую ветку, а затем выполнить команду в терминале:  
+`mvn clean test`
+
+Чтобы запустить UI-тесты, реализованные по методологии **BDD (Cucumber)**, необходимо переключиться на ветку `homework_2`
 командой:
 ```bash
 git checkout homework_2
 ```
+и выполнить команду запуска тестов.
 
-Для запуска всех тестов команда (по умолчанию запуститься браузер `Chrome`):  
-`mvn clean test`
-
-Для запуска всех тестов в **выбранном браузере** команда:
+Для запуска всех тестов в **выбранном браузере**:
 #### Chrome
 `mvn clean test -Dbrowser=chrome`
 
 #### Firefox
 `mvn clean test -Dbrowser=firefox`
+
+Чтобы запустить API-тесты, реализованные с помощью  **CitrusFramework**, необходимо переключиться на ветку `homework_3`
+командой:
+```bash
+git checkout homework_3
+```
+и выполнить команду запуска тестов.
+
+
 
 
 
