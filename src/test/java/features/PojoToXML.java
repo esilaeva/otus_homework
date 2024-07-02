@@ -12,7 +12,7 @@ import javax.xml.namespace.QName;
 public class PojoToXML<T> {
   public T generic;
   
-  public String convert(T requestClass, Object requestData, String namespaseURI, String localPart) { //namespaseURI=http://oms.rt.ru/ , localPart=submitOrderRequest
+  public String convert(T requestClass, Object requestData, String namespaseURI, String localPart) {
     generic = requestClass;
     String s = null;
     

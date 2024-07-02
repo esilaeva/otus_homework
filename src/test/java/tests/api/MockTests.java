@@ -8,6 +8,7 @@ import org.citrusframework.annotations.CitrusResource;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.junit.jupiter.CitrusSupport;
 import org.citrusframework.spi.Resources;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,8 @@ public class MockTests {
   private HttpClient restClient;
   @CitrusEndpoint
   private HttpClient mockClient;
+  @CitrusEndpoint
+  private HttpServer restServer;
   @CitrusResource
   private TestContext context;
   private String getAllUsers = "/user/get/all";
@@ -39,13 +42,13 @@ public class MockTests {
     );
     
     action.$(http()
-        .server("restServer")
+        .server(restServer)
         .receive()
         .get(getAllUsers)
     );
     
     action.$(http()
-        .server("restServer")
+        .server(restServer)
         .send().response(HttpStatus.OK)
         .message()
         .type("application/json")
@@ -80,13 +83,13 @@ public class MockTests {
     );
     
     action.$(http()
-        .server("restServer")
+        .server(restServer)
         .receive()
         .get(getAllCourses)
     );
     
     action.$(http()
-        .server("restServer")
+        .server(restServer)
         .send().response(HttpStatus.OK)
         .message()
         .type("application/json")
@@ -125,13 +128,13 @@ public class MockTests {
     );
     
     action.$(http()
-        .server("restServer")
+        .server(restServer)
         .receive()
         .get(getScore + context.getVariable("userId"))
     );
     
     action.$(http()
-        .server("restServer")
+        .server(restServer)
         .send().response(HttpStatus.OK)
         .message()
         .type("application/json")

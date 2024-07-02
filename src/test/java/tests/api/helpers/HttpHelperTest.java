@@ -15,9 +15,10 @@ import org.springframework.http.HttpStatus;
 import pojo.Data;
 import pojo.Support;
 import pojo.User;
+import services.ServiceApiAbs;
 
 @CitrusSupport
-public class HttpHelperTest {
+public class HttpHelperTest extends ServiceApiAbs {
   
   @CitrusEndpoint
   private HttpClient restClient;
@@ -34,11 +35,11 @@ public class HttpHelperTest {
     data.setEmail("janet.weaver@reqres.in");
     data.setFirstName("Janet");
     data.setLastName("Weaver");
-    data.setAvatar("https://reqres.in/img/faces/2-image.jpg");
+    data.setAvatar(getBaseApiUrl() + "/img/faces/2-image.jpg");
     user.setData(data);
     
     Support support = new Support();
-    support.setUrl("https://reqres.in/#support-heading");
+    support.setUrl(getBaseApiUrl() + "/#support-heading");
     support.setText("To keep ReqRes free, contributions towards server costs are appreciated!");
     
     user.setSupport(support);

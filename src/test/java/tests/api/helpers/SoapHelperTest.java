@@ -10,12 +10,13 @@ import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.junit.jupiter.CitrusSupport;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
+import services.ServiceApiAbs;
 import webservicesserver.NumberToDollars;
 import webservicesserver.NumberToDollarsResponse;
 
 @CitrusSupport
 @ContextConfiguration(locations = "classpath:citrus-context.xml")
-public class SoapHelperTest {
+public class SoapHelperTest extends ServiceApiAbs {
   
   PojoToXML<Class<NumberToDollars>> ptxRq = new PojoToXML<>();
   PojoToXML<Class<NumberToDollarsResponse>> ptxRs = new PojoToXML<>();
@@ -30,7 +31,7 @@ public class SoapHelperTest {
         .body(ptxRq.convert(
             NumberToDollars.class,
             getNumberToDollarsRequest(),
-            "http://www.dataaccess.com/webservicesserver/",
+            getBaseSoapUrl() + "/",
             "NumberToDollars"))
     );
     
@@ -40,7 +41,7 @@ public class SoapHelperTest {
         .body(ptxRs.convert(
             NumberToDollarsResponse.class,
             getNumberToDollarsResponse(),
-            "http://www.dataaccess.com/webservicesserver/",
+            getBaseSoapUrl() + "/",
             "NumberToDollarsResponse"))
     
     );
