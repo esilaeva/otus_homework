@@ -12,7 +12,7 @@ timeout(60) {
                 currentBuild.description = "User: $BUILD_USER"
             }
             stage("Run API tests ${jobDescription}") {
-                sh "docker run --rm --network=host --name ${testContainerName} -v $pwd/allure-results:/home/ubuntu/target/allure-results -t api-tests"
+                sh "docker run --rm --network=host --name ${testContainerName} -v $pwd/allure-results:/home/ubuntu/target/allure-results -t localhost:5005/api-tests"
             }
             stage("Publish allure report") {
                 allure {[
