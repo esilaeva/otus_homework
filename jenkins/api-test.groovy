@@ -22,9 +22,9 @@ timeout(60) {
             stage("Telegram notification") {
                 def allureReport = readFile test: $pwd/allure-result/export/influxDbData.txt
                 Connection connection = new Connection()
-        } finally {
-            sh "docker stop $testContainerName"
-
+            } finally {
+                sh "docker stop $testContainerName"
+            }
         }
     }
 }
