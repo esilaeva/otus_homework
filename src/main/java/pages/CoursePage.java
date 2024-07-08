@@ -3,6 +3,7 @@ package pages;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import io.qameta.allure.Step;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +22,7 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
     super(driver);
   }
   
+  @Step("Проверка открытия страницы ")
   public CoursePage pageShouldBeOpened(String courseTitle) {
     String locator = String.format("//h1[normalize-space(text())='%s']", courseTitle);
     
@@ -30,6 +32,7 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
     return this;
   }
   
+  @Step("Проверка даты курса")
   public void validationCourseDate(LocalDate date) throws IOException {
     Document page = Jsoup.connect(driver.getCurrentUrl()).get();
     

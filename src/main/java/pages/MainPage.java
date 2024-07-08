@@ -3,6 +3,7 @@ package pages;
 import annotations.UrlPrefix;
 import com.github.javafaker.Faker;
 import com.google.inject.Inject;
+import io.qameta.allure.Step;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.openqa.selenium.By;
@@ -18,12 +19,14 @@ public class MainPage extends AnyPageAbs<MainPage> {
     super(driver);
   }
   
+  @Step("Наводим курсор на элемент")
   public MainPage hoverElement() {
     moveToElement(hoverElement);
     
     return this;
   }
   
+  @Step("Кликаем по любой категории")
   public String clickRandomCategory() {
     String categoryName = "";
     

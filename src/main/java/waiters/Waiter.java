@@ -1,5 +1,6 @@
 package waiters;
 
+import io.qameta.allure.Step;
 import java.time.Duration;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,7 @@ public class Waiter implements IWaiter {
   }
   
   @Override
+  @Step("Ожидание для состояния")
   public boolean waitForCondition(ExpectedCondition condition) {
     WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(10));
     try {
@@ -27,6 +29,7 @@ public class Waiter implements IWaiter {
     }
   }
   
+  @Step("Ожидание видимости элемента")
   public boolean waitForElementVisible(WebElement element) {
     return waitForCondition(ExpectedConditions.visibilityOf(element));
   }

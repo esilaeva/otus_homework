@@ -1,5 +1,6 @@
 package listeners;
 
+import io.qameta.allure.Step;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +19,7 @@ public class ActionsListener implements WebDriverListener {
       + "\"onclick\", \"style=null;\");";
   
   @Override
+  @Step("Состояние до выполнения action")
   public void beforePerform(WebDriver driver, Collection<Sequence> actions) {
     actions.stream()
         .flatMap(action -> getOrigins(action).stream())
