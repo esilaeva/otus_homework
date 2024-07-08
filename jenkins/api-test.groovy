@@ -1,3 +1,5 @@
+import utils.groovy
+
 timeout(60) {
     node("maven") {
         def testContainerName = "api_tests_$BUILD_NUMBER"
@@ -28,9 +30,3 @@ timeout(60) {
         }
     }
 }
-
-def prepareConfig() {
-    def yamlConfig = readYaml test: $YAML_CONFIG
-    yamlConfig.each(k, v -> System.setProperty(v))
-}
-
