@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import config.WebConfig;
 import driver.DriverFactory;
+import io.qameta.allure.Step;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 
@@ -13,6 +14,7 @@ public class GuiceModule extends AbstractModule {
   private final WebDriver driver = new DriverFactory(config).getDriver();
   
   @Provides
+  @Step("Получение веб-драйвера")
   public WebDriver getDriver() {
     return driver;
   }

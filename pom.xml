@@ -34,7 +34,6 @@
 
         <allure-maven.version>2.10.0</allure-maven.version>
 
-        <base.url/>
     </properties>
 
     <dependencies>
@@ -101,21 +100,6 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <base.url>https://otus.ru</base.url>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <base.url>https://otus.ru</base.url>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
             <plugin>
@@ -124,7 +108,7 @@
                 <version>${surefire.plugin.version}</version>
                 <configuration>
 
-                    <systemProperties>
+                    <systemPropertyVariables>
                         <property>
                             <name>allure.results.directory</name>
                             <value>${project.basedir}/allure-results</value>
@@ -133,11 +117,6 @@
                             <name>junit.jupiter.extensions.autodetection.enabled</name>
                             <value>true</value>
                         </property>
-                    </systemProperties>
-
-                    <systemPropertyVariables>
-                        <base.url>${base.url}</base.url>
-                        <browser.name>chrome</browser.name>
                     </systemPropertyVariables>
 
                     <properties>
