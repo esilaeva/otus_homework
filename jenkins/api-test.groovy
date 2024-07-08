@@ -1,5 +1,3 @@
-import jenkins/utils.groovy
-
 timeout(60) {
     node("maven") {
         def testContainerName = "api_tests_$BUILD_NUMBER"
@@ -12,7 +10,7 @@ timeout(60) {
                 currentBuild.description = "User: $BUILD_USER"
             }
             stage("Run API tests ${jobDescription}") {
-                sh "docker run --rm --network=host --name ${testContainerName} -v $pwd/allure-results:/home/ubuntu/target/allure-results -t api-tests"
+                sh "docker run --rm --network=host --name ${testContainerName} -v $pwd/allure-results:/home/ubuntu/target/allure-results -t localhost:5005/api-tests"
             }
             stage("Publish allure report") {
                 allure {[
@@ -29,4 +27,13 @@ timeout(60) {
                 sh "docker stop $testContainerName"
         }
     }
+}
+
+def prepareConfig() {
+    def yamlConfig = readYaml test: $YAML_CONFIG
+    yamlConfig.each(k, v -> System.setProperty(v))
+}
+
+def triggerJob(def jobName, def config) {
+    return build job: $jobName, parameters: ["YAML_CONFIG": config]
 }
