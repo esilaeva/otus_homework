@@ -1,4 +1,4 @@
-import utils.groovy
+import jenkins/utils.groovy
 
 timeout(60) {
     node("maven") {
@@ -23,10 +23,10 @@ timeout(60) {
             }
             stage("Telegram notification") {
                 def allureReport = readFile test: $pwd/allure-result/export/influxDbData.txt
-                Connection connection = new Connection()
-            } finally {
-                sh "docker stop $testContainerName"
+                def connection = new Connection()
             }
+        } finally {
+                sh "docker stop $testContainerName"
         }
     }
 }
