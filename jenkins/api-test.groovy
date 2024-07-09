@@ -20,9 +20,6 @@ timeout(60) {
                 }
             }
             stage("Telegram notification") {
-                @Grab(group='io.qameta.allure', module='allure-java-commons', version='2.13.9')
-                import io.qameta.allure.Allure
-
                 def allureReport = readFile(file: "$pwd/allure-result/export/influxDbData.txt")
                 Allure.addAttachment("Allure Report", "text/plain", allureReport)
 
