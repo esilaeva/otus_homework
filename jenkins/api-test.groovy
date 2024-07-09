@@ -20,7 +20,7 @@ timeout(60) {
                 }
             }
             stage("Telegram notification") {
-                def allureReport = readFile(file: "$pwd/allure-result/export/influxDbData.txt")
+                def allureReport = readFile(text: "$pwd/allure-result/export/influxDbData.txt")
                 Allure.addAttachment("Allure Report", "text/plain", allureReport)
 
             }
@@ -31,7 +31,7 @@ timeout(60) {
 }
 
 def prepareConfig() {
-    def yamlConfig = readYaml(file: "$YAML_CONFIG")
+    def yamlConfig = readYaml(text: "$YAML_CONFIG")
     yamlConfig.each{k, v -> System.setProperty(v)}
 }
 
