@@ -37,8 +37,8 @@ pipeline {
         stage('Telegram notification') {
             steps {
                 script {
-                    @Grab(group='io.qameta.allure', module='allure-java-commons', version='2.13.9') // Добавлено использование @Grab для загрузки зависимости Allure
-                    import io.qameta.allure.Allure // Импорт класса Allure
+                    //@Grab(group='io.qameta.allure', module='allure-java-commons', version='2.13.9') // Добавлено использование @Grab для загрузки зависимости Allure
+                    //import io.qameta.allure.Allure // Импорт класса Allure
 
                     def allureReport = readFile(file: "${pwd()}/allure-result/export/influxDbData.txt") // Исправлено использование метода readFile
                     Allure.addAttachment("Allure Report", "text/plain", allureReport)
