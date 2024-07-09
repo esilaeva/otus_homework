@@ -1,6 +1,6 @@
 timeout(60) {
     node("maven") {
-        def testContainerName = "api_tests_$BUILD_NUMBER"
+        def testContainerName = "ui_tests_$BUILD_NUMBER"
 
         env.MY_PARAM = env.MYPARAM ?: ""
 
@@ -9,8 +9,8 @@ timeout(60) {
             wrap([$class: 'BuildUser']) {
                 currentBuild.description = "User: $BUILD_USER"
             }
-            stage("Run API tests ${jobDescription}") {
-                sh "docker run --rm --network=host --name ${testContainerName} -v $pwd/allure-results:/home/ubuntu/target/allure-results -t localhost:5005/api-tests"
+            stage("Run UI tests ${jobDescription}") {
+                sh "docker run --rm --network=host --name ${testContainerName} -v $pwd/allure-results:/home/ubuntu/target/allure-results -t localhost:5005/ui-tests"
             }
             stage("Publish allure report") {
                 allure {[
@@ -25,7 +25,7 @@ timeout(60) {
 
             }
         } finally {
-                sh "docker stop $testContainerName"
+            sh "docker stop $testContainerName"
         }
     }
 }
