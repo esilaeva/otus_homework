@@ -35,5 +35,5 @@ def prepareConfig() {
 }
 
 def triggerJob(def jobName, def config) {
-    return build job: "$jobName", parameters: [string(name: 'YAML_CONFIG', value: config)]
+    return build {job: "$jobName", parameters: ["YAML_CONFIG": config]}
 }
