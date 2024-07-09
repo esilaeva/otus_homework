@@ -19,7 +19,7 @@ timeout(60) {
                 ])
             }
             stage("Telegram notification") {
-                def allureReport = readFile(file: "${pwd()}/allure-results/export/influxDbData.txt")
+                def allureReport = readFile(text: "${pwd()}/allure-results/export/influxDbData.txt")
                 Allure.addAttachment("Allure Report", "text/plain", allureReport)
             }
         } finally {
