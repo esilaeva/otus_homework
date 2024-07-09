@@ -1,3 +1,5 @@
+import io.qameta.allure.Allure
+
 timeout(60) {
     node("maven") {
         def testContainerName = "api_tests_$BUILD_NUMBER"
@@ -21,7 +23,8 @@ timeout(60) {
             }
             stage("Telegram notification") {
                 def allureReport = readFile test: $pwd/allure-result/export/influxDbData.txt
-                def connection = new Connection()
+                Allure.addAttachment("Allure Report", "text/plain", allureReport)
+
             }
         } finally {
                 sh "docker stop $testContainerName"
