@@ -185,21 +185,6 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <base.url>https://otus.ru</base.url>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <base.url>https://otus.ru</base.url>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
             <plugin>
