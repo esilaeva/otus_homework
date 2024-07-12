@@ -12,7 +12,9 @@ timeout(60) {
                 }
             }
             stage("Run API tests") {
-                sh "docker run  --network=host --name ${testContainerName} -t localhost:5005/apitests:1.0"
+                sh "docker run --network=host --name ${testContainerName} -v /home/jenkins/.m2:/root/.m2 -t localhost:5005/apitests:1.0"
+//                docker run --network=host -v ./.m2:/root/.m2 localhost:5005/apitests:1.0
+
             }
 //            stage("Publish allure report") {
 //                allure([
