@@ -1,8 +1,11 @@
 timeout(60) {
     node("maven-cloud") {
         def testContainerName = "apitests_$BUILD_NUMBER"
+        def telegramToken = credentials('token')
+        def chatId = credentials('chatId')
+        def message = ""
 
-//        try {
+        try {
             stage("Check Docker") {
                 script {
                     def dockerVersion = sh(script: 'docker --version', returnStatus: true)
@@ -13,21 +16,18 @@ timeout(60) {
             }
             stage("Run API tests") {
                 sh "docker run --network=host --name ${testContainerName} -v /home/jenkins/.m2:/root/.m2 -t localhost:5005/apitests:1.0"
-//                docker run --network=host -v ./.m2:/root/.m2 localhost:5005/apitests:1.0
-
+                message = "API tests completed successfully for build ${BUILD_NUMBER}"
             }
-//            stage("Publish allure report") {
-//                allure([
-//                        disabled: true,
-//                        results: ["${pwd}/allure-results"]
-//                ])
-//            }
-//            stage("Telegram notification") {
-//                def allureReport = readFile(file: "${pwd}/allure-results/export/influxDbData.txt")
-//                Allure.addAttachment("Allure Report", "text/plain", allureReport)
-//            }
-//        } finally {
-//            sh "docker stop ${testContainerName}"
-//        }
+        } catch (Exception e) {
+            message = "API tests failed for build ${BUILD_NUMBER}: ${e.message}"
+            throw e
+        } finally {
+            // Отправляем уведомление в Telegram
+            sh """
+        curl -s -X POST https://api.telegram.org/bot${telegramToken}/sendMessage \\
+            -d chat_id=${chatId} \\
+            -d text="${message}"
+    """
+        }
     }
 }
