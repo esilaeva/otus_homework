@@ -37,6 +37,7 @@
         <checkstyle.version>3.3.1</checkstyle.version>
 
         <allure-maven.version>2.10.0</allure-maven.version>
+        <allure.results.directory>target/allure-results</allure.results.directory>
 
         <base.url/>
     </properties>
@@ -190,6 +191,13 @@
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-maven</artifactId>
+            <version>2.12.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>${allure.version}</version>
         </dependency>
@@ -198,6 +206,7 @@
             <artifactId>allure-java-commons</artifactId>
             <version>${allure.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -211,7 +220,7 @@
                     <systemPropertyVariables>
                         <property>
                             <name>allure.results.directory</name>
-                            <value>${project.basedir}/allure-results</value>
+                            <value>target/allure-results</value>
                         </property>
                         <property>
                             <name>junit.jupiter.extensions.autodetection.enabled</name>
