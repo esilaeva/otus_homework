@@ -3,11 +3,13 @@ package tests.api.helpers;
 import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 import features.PojoToXML;
+import io.qameta.allure.Step;
 import java.math.BigDecimal;
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.annotations.CitrusResource;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.junit.jupiter.CitrusSupport;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
 import services.ServiceApiAbs;
@@ -23,6 +25,7 @@ public class SoapHelperTest extends ServiceApiAbs {
   
   @Test
   @CitrusTest
+  @DisplayName("Soap Helper")
   public void getTestActions(@CitrusResource TestActionRunner runner) {
     
     runner.$(soap().client("soapClient")

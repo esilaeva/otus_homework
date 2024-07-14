@@ -10,21 +10,50 @@ pipeline {
         timeout(time: 60, unit: 'MINUTES')
     }
     stages {
-        stage("Check Docker") {
+        stage('java') {
             steps {
-                script {
-                    def dockerVersion = sh(script: 'docker --version', returnStatus: true)
-                    if (dockerVersion != 0) {
-                        error "Docker is not installed or not found in PATH"
-                    }
+                sh '''
+                    env | grep -e PATH -e JAVA_HOME
+                    which java
+                    java -version
+                '''
+            }
+        }
+        stage('Clone Repository') {
+            steps {
+                git branch: 'homework_3', url: 'https://github.com/esilaeva/otus_homework.git'
+                sh 'mvn clean test'
+            }
+            post {
+                always {
+                    allure includeProperties:
+                            false,
+                            jdk: '',
+                            results: [[path: 'build/allure-results']]
                 }
             }
         }
+        // stage("Check Docker") {
+        //     steps {
+        //         script {
+        //             def dockerVersion = sh(script: 'docker --version', returnStatus: true)
+        //             if (dockerVersion != 0) {
+        //                 error "Docker is not installed or not found in PATH"
+        //             }
+        //         }
+        //     }
+        // }
         stage('Run API tests') {
+            // agent {
+            //     docker {
+            //         image 'apitests'
+            //         args '-v /home/jenkins/.m2:/root/.m2'
+            //     }
+            // }
             steps {
                 script {
                     def testContainerName = "apitests_${env.BUILD_NUMBER}"
-                    // sh "docker run --network=host --name ${testContainerName} -v /home/jenkins/.m2:/root/.m2 -t localhost:5005/apitests:1.0"
+                    //sh "docker run --network=host --name ${testContainerName} -v /home/jenkins/.m2:/root/.m2 -t localhost:5005/apitests"
                     env.MESSAGE = "API tests completed successfully for build #${env.BUILD_NUMBER}"
                 }
             }

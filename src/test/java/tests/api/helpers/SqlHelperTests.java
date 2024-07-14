@@ -3,6 +3,7 @@ package tests.api.helpers;
 import extensions.ApiExtension;
 import extensions.RequiresCleanup;
 import org.citrusframework.annotations.CitrusTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class SqlHelperTests implements RequiresCleanup {
   
   @Test
   @CitrusTest
+  @DisplayName("Sql Helper")
   public void databaseTest() {
     try {
       // Creating a table if it does not exist

@@ -10,6 +10,7 @@ import org.citrusframework.context.TestContext;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.junit.jupiter.CitrusSupport;
 import org.citrusframework.message.builder.ObjectMappingPayloadBuilder;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import pojo.Data;
@@ -27,13 +28,14 @@ public class HttpHelperTest extends ServiceApiAbs {
   
   @Test
   @CitrusTest
+  @DisplayName("Http Helper")
   void restHttpHelperTest(@CitrusResource TestActionRunner actions) {
     User user = new User();
     
     Data data = new Data();
     data.setId(Integer.valueOf(context.getVariable("userId")));
     data.setEmail("janet.weaver@reqres.in");
-    data.setFirstName("Janet");
+    data.setFirstName("Janet2");
     data.setLastName("Weaver");
     data.setAvatar(getBaseApiUrl() + "/img/faces/2-image.jpg");
     user.setData(data);

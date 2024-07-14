@@ -11,6 +11,7 @@ import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.junit.jupiter.CitrusSupport;
 import org.citrusframework.spi.Resources;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,6 +34,7 @@ public class MockTests {
   
   @Test
   @CitrusTest
+  @DisplayName("Получение списка всех пользователей с использованием Mock Server")
   public void getAllUsersMockTest(@CitrusResource TestActionRunner action) {
     action.$(http()
         .client(mockClient)
@@ -74,6 +76,7 @@ public class MockTests {
   
   @Test
   @CitrusTest
+  @DisplayName("Получение списка всех курсов с использованием Mock Server")
   public void getAllCoursesMockTest(@CitrusResource TestActionRunner action) {
     action.$(http()
         .client(mockClient)
@@ -119,6 +122,7 @@ public class MockTests {
   
   @Test
   @CitrusTest
+  @DisplayName("Получение списка всех пользователей с использованием Mock Server")
   public void getScoreMockTest(@CitrusResource TestActionRunner action) {
     action.$(http()
         .client(mockClient)
