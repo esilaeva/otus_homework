@@ -35,7 +35,7 @@ public class HttpHelperTest extends ServiceApiAbs {
     Data data = new Data();
     data.setId(Integer.valueOf(context.getVariable("userId")));
     data.setEmail("janet.weaver@reqres.in");
-    data.setFirstName("Janet2");
+    data.setFirstName("Janet");
     data.setLastName("Weaver");
     data.setAvatar(getBaseApiUrl() + "/img/faces/2-image.jpg");
     user.setData(data);

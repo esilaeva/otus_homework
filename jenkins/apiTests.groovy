@@ -21,7 +21,8 @@ pipeline {
         }
         stage('Clone Repository') {
             steps {
-                git branch: 'homework_3', url: 'https://github.com/esilaeva/otus_homework.git'
+                git branch: "$env.BRANCH", url: 'https://github.com/esilaeva/otus_homework.git'
+
                 sh 'mvn clean test'
             }
             post {
@@ -33,27 +34,10 @@ pipeline {
                 }
             }
         }
-        // stage("Check Docker") {
-        //     steps {
-        //         script {
-        //             def dockerVersion = sh(script: 'docker --version', returnStatus: true)
-        //             if (dockerVersion != 0) {
-        //                 error "Docker is not installed or not found in PATH"
-        //             }
-        //         }
-        //     }
-        // }
-        stage('Run API tests') {
-            // agent {
-            //     docker {
-            //         image 'apitests'
-            //         args '-v /home/jenkins/.m2:/root/.m2'
-            //     }
-            // }
+        stage('Create Allure Report') {
             steps {
                 script {
                     def testContainerName = "apitests_${env.BUILD_NUMBER}"
-                    //sh "docker run --network=host --name ${testContainerName} -v /home/jenkins/.m2:/root/.m2 -t localhost:5005/apitests"
                     env.MESSAGE = "API tests completed successfully for build #${env.BUILD_NUMBER}"
                 }
             }
