@@ -21,8 +21,9 @@ pipeline {
         }
         stage('Clone Repository') {
             steps {
-                git branch: 'homework_3', url: 'https://github.com/esilaeva/otus_homework.git'
-                sh 'mvn clean test'
+                git branch: "$env.BRANCH", url: 'https://github.com/esilaeva/otus_homework.git'
+
+                    sh 'mvn clean test'
             }
             post {
                 always {
@@ -43,7 +44,7 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Run API tests') {
+        stage('Create Allure Report') {
             // agent {
             //     docker {
             //         image 'apitests'
