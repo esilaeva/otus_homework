@@ -14,7 +14,7 @@ import pages.CoursePage;
 @ExtendWith(UIExtension.class)
 public class CoursesBlockTest {
   
-  public static final String COURSE_TITLE = "Infrastructure as a code";
+  public static final String COURSE_TITLE = "Программист С";
   @Inject
   private CatalogPage catalogPage;
   

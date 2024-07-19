@@ -24,7 +24,7 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
   
   @Step("Проверка открытия страницы ")
   public CoursePage pageShouldBeOpened(String courseTitle) {
-    String locator = String.format("//h1[normalize-space(text())='%s']", courseTitle);
+    String locator = String.format("//h1", courseTitle);
     
     assertThat(waiter.waitForElementVisible($(By.xpath(locator))))
         .as("Error").isTrue();
@@ -32,7 +32,7 @@ public class CoursePage extends AnyPageAbs<CoursePage> {
     return this;
   }
   
-  @Step("Проверка даты курса")
+  @Step("Проверка даты начала курса")
   public void validationCourseDate(LocalDate date) throws IOException {
     Document page = Jsoup.connect(driver.getCurrentUrl()).get();
     
