@@ -9,5 +9,3 @@ RUN apt-get update && apt-get install -y docker.io
 WORKDIR /home/tests/api-test
 
 COPY . .
-
-ENTRYPOINT ["./entrypoint.sh"]
