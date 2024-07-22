@@ -19,6 +19,7 @@ pipeline {
                     sh 'mkdir -p ${ALLURE_RESULTS} && rm -rf ${ALLURE_RESULTS}/*'
                     sh 'mkdir -p ${ALLURE_REPORT} && rm -rf ${ALLURE_REPORT}/*'
 
+                    // Получение параметров из YAML_CONFIG
                     def configText = params.YAML_CONFIG
                     def configMap = [:]
                     configText.split('\n').each { line ->
@@ -67,10 +68,6 @@ pipeline {
             script {
                 // Генерация отчета Allure с помощью плагина Jenkins
                 allure includeProperties: false, jdk: '', reportBuildPolicy: 'ALWAYS', results: [[path: "${ALLURE_RESULTS}"]]
-
-                // Добавление паузы после формирования отчета Allure
-                echo "Pausing for 30 seconds to ensure Allure report generation is complete."
-                sleep(time: 30, unit: 'SECONDS')
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
