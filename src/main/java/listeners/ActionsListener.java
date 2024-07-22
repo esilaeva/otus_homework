@@ -19,13 +19,13 @@ public class ActionsListener implements WebDriverListener {
       + "\"onclick\", \"style=null;\");";
   
   @Override
-  @Step("Состояние до выполнения action")
   public void beforePerform(WebDriver driver, Collection<Sequence> actions) {
     actions.stream()
         .flatMap(action -> getOrigins(action).stream())
         .forEach(origin -> ((JavascriptExecutor) driver)
             .executeScript(SCRIPT_HIGHLIGHT_ELEMENT, origin));
   }
+  
   @SuppressWarnings("unchecked")
   private List<WebElement> getOrigins(Sequence sequence) {
     Map<String, Object> encodedSequence = sequence.encode();

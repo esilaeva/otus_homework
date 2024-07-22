@@ -14,7 +14,6 @@ public class GuiceModule extends AbstractModule {
   private final WebDriver driver = new DriverFactory(config).getDriver();
   
   @Provides
-  @Step("Получение веб-драйвера")
   public WebDriver getDriver() {
     return driver;
   }
