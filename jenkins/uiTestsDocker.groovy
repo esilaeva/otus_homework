@@ -11,6 +11,10 @@ pipeline {
         CHAT_ID = credentials('chatID')
         JOB_NAME = "${env.JOB_NAME}"
         DOCKER_HOME = "/home/ubuntu/ui-test"
+        BASE_URL = ""
+        BROWSER_NAME = ""
+        BROWSER_VERSION = ""
+        REMOTE_URL = ""
     }
     stages {
         stage('Prepare Environment') {
@@ -19,7 +23,6 @@ pipeline {
                     sh 'mkdir -p ${ALLURE_RESULTS} && rm -rf ${ALLURE_RESULTS}/*'
                     sh 'mkdir -p ${ALLURE_REPORT} && rm -rf ${ALLURE_REPORT}/*'
 
-                    // Получение параметров из YAML_CONFIG
                     def configText = params.YAML_CONFIG
                     def configMap = [:]
                     configText.split('\n').each { line ->
@@ -46,7 +49,7 @@ pipeline {
                         CONTAINER_ID=$(docker run --privileged -d \
                             -v ${MAVEN_LOCAL_REPO}:${MAVEN_LOCAL_REPO} 192.168.88.193:5005/uitests:1.0 \
                             /bin/bash -c "rm -rf ${DOCKER_HOME}/allure-results/* ${DOCKER_HOME}/allure-report/* && \
-                            mvn clean test -Denv=remote -Dmaven.repo.local=${MAVEN_LOCAL_REPO} && \
+                            -DbaseUrl=${env.BASE_URL} -DbrowserName=${env.BROWSER_NAME} -DbrowserVersion=${env.BROWSER_VERSION} -DremoteUrl=${env.REMOTE_URL} -Dmaven.repo.local=${env.MAVEN_LOCAL_REPO} && \
                             allure generate ${DOCKER_HOME}/allure-results --clean -o ${DOCKER_HOME}/allure-report")
                         
                         # Просмотр логов выполнения тестов
@@ -68,6 +71,10 @@ pipeline {
             script {
                 // Генерация отчета Allure с помощью плагина Jenkins
                 allure includeProperties: false, jdk: '', reportBuildPolicy: 'ALWAYS', results: [[path: "${ALLURE_RESULTS}"]]
+
+                // Добавление паузы после формирования отчета Allure
+                echo "Pausing for 30 seconds to ensure Allure report generation is complete."
+                sleep(time: 30, unit: 'SECONDS')
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
