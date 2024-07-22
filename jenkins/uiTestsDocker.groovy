@@ -22,7 +22,7 @@ pipeline {
                     def configText = params.YAML_CONFIG
                     def configMap = [:]
                     configText.split('\n').each { line ->
-                        def parts = line.split(':', 2) // Split only at the first ':'
+                        def parts = line.split(':', 2)
                         if (parts.length == 2) {
                             configMap[parts[0].trim()] = parts[1].trim()
                         }
@@ -67,10 +67,6 @@ pipeline {
             script {
                 // Генерация отчета Allure с помощью плагина Jenkins
                 allure includeProperties: false, jdk: '', reportBuildPolicy: 'ALWAYS', results: [[path: "${ALLURE_RESULTS}"]]
-
-                // Добавление паузы после формирования отчета Allure
-                echo "Pausing for 30 seconds to ensure Allure report generation is complete."
-                sleep(time: 30, unit: 'SECONDS')
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
