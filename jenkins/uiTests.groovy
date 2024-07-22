@@ -18,26 +18,23 @@ pipeline {
                 }
             }
         }
-        stage('Build and Test') {
+        stage('Clone Repository') {
             steps {
                 script {
-                    // Запуск Docker контейнера и выполнение команд внутри него
-                    sh '''
-                        CONTAINER_ID=$(docker run --privileged -d \
-                            -v ${WORKSPACE}/.m2/repository:/home/jenkins/workspace/test/.m2/repository \
-                            192.168.88.193:5005/uitests-success:1.1 \
-                            /bin/bash -c "mvn clean test -Dmaven.repo.local=/home/jenkins/workspace/test/.m2/repository && \
-                                allure generate /home/tests/api-test/allure-results --clean -o /home/tests/api-test/allure-report")
-
-                        # Копирование содержимого результатов и отчетов из контейнера
-                        docker cp $CONTAINER_ID:/home/tests/api-test/allure-results/. ${WORKSPACE}/allure-results/
-                        docker cp $CONTAINER_ID:/home/tests/api-test/allure-report/. ${WORKSPACE}/allure-report/
-                        
-                        docker stop $CONTAINER_ID
-                        docker rm $CONTAINER_ID
-                    '''
+                    sh """
+                        echo "${MAVEN_CONFIG_HOME}"
+                        git clone -b ${env.BRANCH} https://github.com/esilaeva/otus_homework.git 
+                    """
                 }
             }
+        }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh """
+                        mvn -Dmaven.repo.local=${MAVEN_CONFIG_HOME}  clean test -Denv=remote
+                    """
+                }
         }
     }
     post {

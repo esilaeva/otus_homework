@@ -115,12 +115,6 @@
 
                     <systemPropertyVariables>
                         <property>
-                            <configurationParaments>
-                                junit.jupiter.execution.parallel.enabled = true
-                                junit.jupiter.execution.parallel.mode.default = concurrent
-                            </configurationParaments>
-                        </property>
-                        <property>
                             <name>allure.results.directory</name>
                             <value>${project.basedir}/allure-results</value>
                         </property>
