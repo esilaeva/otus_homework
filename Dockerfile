@@ -27,6 +27,4 @@ RUN apt-get update && \
 RUN wget -qO- --show-progress https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz | tar -zx -C /opt/
 ENV PATH=$PATH:/opt/allure-2.27.0/bin
 
-CMD ["mvn", "clean", "test", "-Denv=remote"]
 
-#ENTRYPOINT ["./entrypoint.sh"]
