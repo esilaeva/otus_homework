@@ -16,9 +16,24 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
-                    // Создание и очистка директорий для отчетов
                     sh 'mkdir -p ${ALLURE_RESULTS} && rm -rf ${ALLURE_RESULTS}/*'
                     sh 'mkdir -p ${ALLURE_REPORT} && rm -rf ${ALLURE_REPORT}/*'
+
+                    def configText = params.YAML_CONFIG
+                    def configMap = [:]
+                    configText.split('\n').each { line ->
+                        def parts = line.split(':', 2) // Split only at the first ':'
+                        if (parts.length == 2) {
+                            configMap[parts[0].trim()] = parts[1].trim()
+                        }
+                    }
+
+                    BASE_URL = configMap['BASE_URL']
+                    BROWSER_NAME = configMap['BROWSER_NAME']
+                    BROWSER_VERSION = configMap['BROWSER_VERSION']
+                    REMOTE_URL = configMap['REMOTE_URL']
+
+                    echo "Configuration parsed successfully: BASE_URL=${BASE_URL}, BROWSER_NAME=${BROWSER_NAME}, BROWSER_VERSION=${BROWSER_VERSION}, REMOTE_URL=${REMOTE_URL}"
                 }
             }
         }
