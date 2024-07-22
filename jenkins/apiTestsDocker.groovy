@@ -12,15 +12,6 @@ pipeline {
         JOB_NAME = "${env.JOB_NAME}"
     }
     stages {
-        stage('Prepare Environment') {
-            steps {
-                script {
-                    // Создание и очистка директорий для отчетов
-                    sh 'mkdir -p ${ALLURE_RESULTS} && rm -rf ${ALLURE_RESULTS}/*'
-                    sh 'mkdir -p ${ALLURE_REPORT} && rm -rf ${ALLURE_REPORT}/*'
-                }
-            }
-        }
         stage('Build and Test') {
             steps {
                 script {
@@ -35,13 +26,10 @@ pipeline {
                         
                         # Просмотр логов выполнения тестов
                         docker logs -f $CONTAINER_ID
-
+                        
                         # Копирование содержимого результатов и отчетов из контейнера
                         docker cp $CONTAINER_ID:/home/tests/api-test/allure-results/. ${ALLURE_RESULTS}/
                         docker cp $CONTAINER_ID:/home/tests/api-test/allure-report/. ${ALLURE_REPORT}/
-
-                        docker stop $CONTAINER_ID || true
-                        docker rm $CONTAINER_ID || true
                     '''
                 }
             }
@@ -50,12 +38,18 @@ pipeline {
     post {
         always {
             script {
+                sh '''
+                    docker stop $CONTAINER_ID || true
+                    docker rm $CONTAINER_ID || true
+                '''
+
                 // Генерация отчета Allure с помощью плагина Jenkins
                 allure includeProperties: false, jdk: '', reportBuildPolicy: 'ALWAYS', results: [[path: "${ALLURE_RESULTS}"]]
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
-                env.MESSAGE = "${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}"
+                env.MESSAGE = "${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}\n****************************************"
+                def allureReportUrl = "${env.BUILD_URL}allure"
                 try {
                     def summaryFile = "${ALLURE_REPORT}/widgets/summary.json"
                     if (fileExists(summaryFile)) {
@@ -67,22 +61,20 @@ pipeline {
                         def skipped = summaryJson.statistic.skipped
                         def total = summaryJson.statistic.total
                         def error = total - passed - failed - skipped
-                        env.REPORT_SUMMARY = "Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}, Error: ${error} \nTotal: ${total}"
+                        env.REPORT_SUMMARY = "Passed: ${passed}, Failed: ${failed}, Error: ${error} , Skipped: ${skipped}\nTotal: ${total}"
                     } else {
                         env.REPORT_SUMMARY = "Summary report not found: ${summaryFile}"
                     }
                 } catch (Exception e) {
                     env.REPORT_SUMMARY = "Failed to read Allure report: ${e.message}"
                 }
-                withCredentials([string(credentialsId: 'chatID', variable: 'CHAT_ID'), string(credentialsId: 'token', variable: 'TOKEN')]) {
-                    sh """
-                        curl -X POST -H 'Content-Type: application/json' -d '{
-                            "chat_id": "${CHAT_ID}",
-                            "text": "${env.MESSAGE}\\n${env.REPORT_SUMMARY}",
-                            "disable_notification": false
-                        }' https://api.telegram.org/bot${TOKEN}/sendMessage
-                    """
-                }
+                sh """
+                    curl -X POST -H 'Content-Type: application/json' -d '{
+                        "chat_id": "${env.CHAT_ID}",
+                        "text": "${env.MESSAGE}\\n${env.REPORT_SUMMARY}\\nAllure Report: ${allureReportUrl}",
+                        "disable_notification": false
+                    }' https://api.telegram.org/bot${env.TOKEN}/sendMessage
+                """
             }
         }
     }
