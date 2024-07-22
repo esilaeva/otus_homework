@@ -32,12 +32,12 @@ pipeline {
                         }
                     }
 
-                    BASE_URL = configMap['BASE_URL']
-                    BROWSER_NAME = configMap['BROWSER_NAME']
-                    BROWSER_VERSION = configMap['BROWSER_VERSION']
-                    REMOTE_URL = configMap['REMOTE_URL']
+                    env.BASE_URL = configMap['BASE_URL']
+                    env.BROWSER_NAME = configMap['BROWSER_NAME']
+                    env.BROWSER_VERSION = configMap['BROWSER_VERSION']
+                    env.REMOTE_URL = configMap['REMOTE_URL']
 
-                    echo "Configuration parsed successfully: BASE_URL=${BASE_URL}, BROWSER_NAME=${BROWSER_NAME}, BROWSER_VERSION=${BROWSER_VERSION}, REMOTE_URL=${REMOTE_URL}"
+                    echo "Configuration parsed successfully: BASE_URL=${env.BASE_URL}, BROWSER_NAME=${env.BROWSER_NAME}, BROWSER_VERSION=${env.BROWSER_VERSION}, REMOTE_URL=${env.REMOTE_URL}"
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
                         CONTAINER_ID=$(docker run --privileged -d \
                             -v ${MAVEN_LOCAL_REPO}:${MAVEN_LOCAL_REPO} 192.168.88.193:5005/uitests:1.0 \
                             /bin/bash -c "rm -rf ${DOCKER_HOME}/allure-results/* ${DOCKER_HOME}/allure-report/* && \
-                            -DbaseUrl=${env.BASE_URL} -DbrowserName=${env.BROWSER_NAME} -DbrowserVersion=${env.BROWSER_VERSION} -DremoteUrl=${env.REMOTE_URL} -Dmaven.repo.local=${env.MAVEN_LOCAL_REPO} && \
+                            mvn clean test -Denv=remote -Dmaven.repo.local=${MAVEN_LOCAL_REPO} && \
                             allure generate ${DOCKER_HOME}/allure-results --clean -o ${DOCKER_HOME}/allure-report")
                         
                         # Просмотр логов выполнения тестов
@@ -71,10 +71,6 @@ pipeline {
             script {
                 // Генерация отчета Allure с помощью плагина Jenkins
                 allure includeProperties: false, jdk: '', reportBuildPolicy: 'ALWAYS', results: [[path: "${ALLURE_RESULTS}"]]
-
-                // Добавление паузы после формирования отчета Allure
-                echo "Pausing for 30 seconds to ensure Allure report generation is complete."
-                sleep(time: 30, unit: 'SECONDS')
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
