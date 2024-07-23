@@ -75,7 +75,7 @@ pipeline {
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
-                env.MESSAGE = "${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}"
+                env.MESSAGE = "${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}\n****************************************"
                 def allureReportUrl = "${env.BUILD_URL}allure"
                 try {
                     def summaryFile = "${ALLURE_REPORT}/widgets/summary.json"
@@ -88,7 +88,7 @@ pipeline {
                         def skipped = summaryJson.statistic.skipped
                         def total = summaryJson.statistic.total
                         def error = total - passed - failed - skipped
-                        env.REPORT_SUMMARY = "Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}, Error: ${error} \nTotal: ${total}"
+                        env.REPORT_SUMMARY = "Passed: ${passed}, Failed: ${failed}, Error: ${error} , Skipped: ${skipped}\nTotal: ${total}"
                     } else {
                         env.REPORT_SUMMARY = "Summary report not found: ${summaryFile}"
                     }
