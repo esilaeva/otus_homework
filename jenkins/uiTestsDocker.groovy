@@ -12,6 +12,9 @@ pipeline {
         JOB_NAME = "${env.JOB_NAME}"
         DOCKER_HOME = "/home/ubuntu/ui-test"
     }
+    parameters {
+        text(name: 'YAML_CONFIG', defaultValue: '', description: 'YAML Configuration')
+    }
     stages {
         stage('Prepare Environment') {
             steps {
@@ -28,24 +31,26 @@ pipeline {
                         }
                     }
 
-                    BASE_URL = configMap['BASE_URL']
-                    BROWSER_NAME = configMap['BROWSER_NAME']
-                    BROWSER_VERSION = configMap['BROWSER_VERSION']
-                    REMOTE_URL = configMap['REMOTE_URL']
+                    env.BASE_URL = configMap['BASE_URL'] ?: ''
+                    env.BROWSER_NAME = configMap['BROWSER_NAME'] ?: ''
+                    env.BROWSER_VERSION = configMap['BROWSER_VERSION'] ?: ''
+                    env.IS_REMOTE = configMap['IS_REMOTE'] ?: ''
+                    env.REMOTE_URL = configMap['REMOTE_URL'] ?: ''
 
-                    echo "Configuration parsed successfully: BASE_URL=${BASE_URL}, BROWSER_NAME=${BROWSER_NAME}, BROWSER_VERSION=${BROWSER_VERSION}, REMOTE_URL=${REMOTE_URL}"
+                    echo "Configuration parsed successfully: BASE_URL=${env.BASE_URL}, BROWSER_NAME=${env.BROWSER_NAME}, BROWSER_VERSION=${env.BROWSER_VERSION}, REMOTE_URL=${env.REMOTE_URL}"
                 }
             }
         }
         stage('Build and Test') {
             steps {
                 script {
-                    // Запуск Docker контейнера и выполнение команд внутри него
                     sh '''
+                        # Запуск Docker контейнера и выполнение команд внутри него
                         CONTAINER_ID=$(docker run --privileged -d \
-                            -v ${MAVEN_LOCAL_REPO}:${MAVEN_LOCAL_REPO} 192.168.88.193:5005/uitests:1.0 \
+                            -v ${MAVEN_LOCAL_REPO}:${MAVEN_LOCAL_REPO} \
+                            192.168.88.193:5005/uitests:1.0 \
                             /bin/bash -c "rm -rf ${DOCKER_HOME}/allure-results/* ${DOCKER_HOME}/allure-report/* && \
-                            mvn clean test -Denv=remote -Dmaven.repo.local=${MAVEN_LOCAL_REPO} && \
+                            mvn clean test -DbaseUrl=${BASE_URL} -DbrowserName=${BROWSER_NAME} -DbrowserVersion=${BROWSER_VERSION} -DremoteUrl=${REMOTE_URL} -DisRemote=${IS_REMOTE} -Dmaven.repo.local=${MAVEN_LOCAL_REPO} && \
                             allure generate ${DOCKER_HOME}/allure-results --clean -o ${DOCKER_HOME}/allure-report")
                         
                         # Просмотр логов выполнения тестов
@@ -71,6 +76,7 @@ pipeline {
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
                 env.MESSAGE = "${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}"
+                def allureReportUrl = "${env.BUILD_URL}allure"
                 try {
                     def summaryFile = "${ALLURE_REPORT}/widgets/summary.json"
                     if (fileExists(summaryFile)) {
@@ -92,7 +98,7 @@ pipeline {
                 sh """
                     curl -X POST -H 'Content-Type: application/json' -d '{
                         "chat_id": "${env.CHAT_ID}",
-                        "text": "${env.MESSAGE}\\n${env.REPORT_SUMMARY}",
+                        "text": "${env.MESSAGE}\\n${env.REPORT_SUMMARY}\\nAllure Report: ${allureReportUrl}",
                         "disable_notification": false
                     }' https://api.telegram.org/bot${env.TOKEN}/sendMessage
                 """
