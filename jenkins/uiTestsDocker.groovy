@@ -25,7 +25,7 @@ pipeline {
                     def configText = params.YAML_CONFIG
                     def configMap = [:]
                     configText.split('\n').each { line ->
-                        def parts = line.split(':', 2) // Split only at the first ':'
+                        def parts = line.split(':', 2)
                         if (parts.length == 2) {
                             configMap[parts[0].trim()] = parts[1].trim()
                         }
@@ -75,7 +75,7 @@ pipeline {
 
                 // Подготовка и отправка сообщения в Telegram
                 def buildStatus = currentBuild.currentResult
-                env.MESSAGE = "***${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}***"
+                env.MESSAGE = "${env.JOB_NAME} ${buildStatus.toLowerCase()} for build #${env.BUILD_NUMBER}\n****************************************"
                 def allureReportUrl = "${env.BUILD_URL}allure"
                 try {
                     def summaryFile = "${ALLURE_REPORT}/widgets/summary.json"
