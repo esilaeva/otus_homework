@@ -25,12 +25,16 @@
         <jsoup.version>1.17.2</jsoup.version>
         <slf4j.version>2.1.0-alpha1</slf4j.version>
         <lombok.version>1.18.34</lombok.version>
+        <allure.version>2.27.0</allure.version>
 
         <surefire.plugin.version>3.2.5</surefire.plugin.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
 
         <spotbugs.version>4.8.2.0</spotbugs.version>
         <checkstyle.version>3.3.1</checkstyle.version>
+
+        <allure-maven.version>2.10.0</allure-maven.version>
+        <aspectj.version>1.9.21</aspectj.version>
 
         <base.url/>
         <browser>chrome</browser>
@@ -130,6 +134,16 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -155,9 +169,27 @@
                 <version>${surefire.plugin.version}</version>
                 <configuration>
                     <systemPropertyVariables>-->
-                        <base.url>${base.url}</base.url>
-                        <browser.name>${browser}</browser.name>
+                        <property>
+                            <name>allure.results.directory</name>
+                            <value>${project.basedir}/allure-results</value>
+                        </property>
+                        <property>
+                            <name>junit.jupiter.extensions.autodetection.enabled</name>
+                            <value>true</value>
+                        </property>
                     </systemPropertyVariables>
+
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.junit5.AllureJunit5</value>
+                        </property>
+                    </properties>
+
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -199,6 +231,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure-maven.version}</version>
+                <configuration>
+                    <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>
