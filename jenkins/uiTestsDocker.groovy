@@ -25,7 +25,7 @@ pipeline {
                     def configText = params.YAML_CONFIG
                     def configMap = [:]
                     configText.split('\n').each { line ->
-                        def parts = line.split(':', 2) // Split only at the first ':'
+                        def parts = line.split(':', 2)
                         if (parts.length == 2) {
                             configMap[parts[0].trim()] = parts[1].trim()
                         }
